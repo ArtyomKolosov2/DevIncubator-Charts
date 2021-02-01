@@ -1,0 +1,8 @@
+.form{
+    grid-area: f;
+  }
+  
+.item{
+    max-width: 100px;
+    min-width: 20px;
+}
