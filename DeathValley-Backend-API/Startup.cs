@@ -1,10 +1,13 @@
 using Infrastructure.Context;
+using Infrastructure.Repository;
+using Infrastructure.Repository.Base;
 using Infrastructure.Services;
 using Infrastructure.Services.Base;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,7 +36,13 @@ namespace DeathValley_Backend_API
         {
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
-            services.AddTransient<ICalculatePoints, CalculatePointsService>();
+            services.AddTransient<IChartPointsService, ChartPointsService>();
+            services.AddTransient<IPointsRepository, PointsRepository>();
+            services.AddTransient<IUserDataRepository, UserDataRepository>();
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "client-side/build";
+            });
 
             services.AddControllers();
             services.AddMemoryCache();
@@ -54,6 +64,9 @@ namespace DeathValley_Backend_API
 
             app.UseHttpsRedirection();
 
+
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
             app.UseRouting();
 
             app.UseAuthorization();
@@ -61,6 +74,16 @@ namespace DeathValley_Backend_API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = Path.Join(env.ContentRootPath, "client-side");
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
             });
         }
     }

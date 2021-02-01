@@ -18,60 +18,33 @@ namespace DeathValley_Backend_API.Controllers
     [ApiController]
     public class PlotController : ControllerBase
     {
-        private readonly ICalculatePoints _calculatePoints;
-        private readonly IMemoryCache _memoryCache;
-        private readonly AppDbContext _appDbContext;
-        public PlotController(ICalculatePoints calculatePoints, IMemoryCache memoryCache, AppDbContext appDbContext)
+        private readonly IChartPointsService _calculatePoints;
+        public PlotController(IChartPointsService calculatePoints)
         {
             _calculatePoints = calculatePoints;
-            _memoryCache = memoryCache;
-            _appDbContext = appDbContext;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<IEnumerable<Point>>> GetPoints([FromBody] PlotViewModel viewModel)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Point>>> GetPoints([FromQuery] PlotViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var userData = await _appDbContext.UserDatas.FirstOrDefaultAsync
-                (
-                    userData =>
-                    userData.A == viewModel.A &&
-                    userData.B == viewModel.B &&
-                    userData.C == viewModel.C &&
-                    userData.RangeTo == viewModel.RangeTo &&
-                    userData.RangeFrom == viewModel.RangeFrom
-                );
-                if (userData is not null)
+                var userData = new UserData
                 {
-                    if (_memoryCache.TryGetValue(userData.UserDataId, out IEnumerable<Point> points))
-                    {
-                        return Ok(points);
-                    }
-                    points = await _appDbContext.Points.Where(point => point.ChartId == userData.UserDataId).ToListAsync();
-                    if (points.Any())
-                    {
-                        _memoryCache.Set(userData.UserDataId, points, new MemoryCacheEntryOptions
-                        {
-                            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
-                        });
-                    }
+                    A = viewModel.A,
+                    B = viewModel.B,
+                    C = viewModel.C,
+                    RangeFrom = viewModel.RangeFrom,
+                    RangeTo = viewModel.RangeTo
+                };
+                var points = await _calculatePoints.GetPointsByUserDataAsync(userData);
+                if (points.Any())
+                {
                     return Ok(points);
                 }
                 else
                 {
-                    var newUserData = new UserData
-                    {
-                        A = viewModel.A,
-                        B = viewModel.B,
-                        C = viewModel.C,
-                        RangeFrom = viewModel.RangeFrom,
-                        RangeTo = viewModel.RangeTo,
-                        Step = viewModel.Step,
-                    };
-                    _appDbContext.UserDatas.Add(newUserData);
-                    await _appDbContext.SaveChangesAsync();
-                    return Ok(await _calculatePoints.CalculatePointsByUserDataAsync(newUserData));
+                    return NoContent();
                 }
             }
 

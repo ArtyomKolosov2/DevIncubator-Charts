@@ -13,7 +13,7 @@ namespace Core.ValidationAttributes
             var plotViewModel = value as PlotViewModel;
             if (plotViewModel.RangeFrom >= plotViewModel.RangeTo)
             {
-                this.ErrorMessage = "Start range must be lower than end range!";
+                ErrorMessage = "Start range must be lower than end range!";
                 return false;
             }
             return true;

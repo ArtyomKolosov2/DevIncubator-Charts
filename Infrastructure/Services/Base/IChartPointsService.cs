@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services.Base
 {
-    public interface ICalculatePoints
+    public interface IChartPointsService
     {
-        public Task<IEnumerable<Point>> CalculatePointsByUserDataAsync(UserData data);
+        public Task<IEnumerable<Point>> GetPointsByUserDataAsync(UserData data);
     }
 }
