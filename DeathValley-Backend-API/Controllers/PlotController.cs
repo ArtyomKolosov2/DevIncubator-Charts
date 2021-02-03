@@ -18,10 +18,10 @@ namespace DeathValley_Backend_API.Controllers
     [ApiController]
     public class PlotController : ControllerBase
     {
-        private readonly IChartPointsService _calculatePoints;
-        public PlotController(IChartPointsService calculatePoints)
+        private readonly IChartPointsService _getChartPointsService;
+        public PlotController(IChartPointsService getChartPointsService)
         {
-            _calculatePoints = calculatePoints;
+            _getChartPointsService = getChartPointsService;
         }
 
         [HttpGet]
@@ -29,25 +29,15 @@ namespace DeathValley_Backend_API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userData = new UserData
-                {
-                    A = viewModel.A,
-                    B = viewModel.B,
-                    C = viewModel.C,
-                    RangeFrom = viewModel.RangeFrom,
-                    RangeTo = viewModel.RangeTo
-                };
-                var points = await _calculatePoints.GetPointsByUserDataAsync(userData);
+                var userData = new UserData(viewModel);
+                var points = await _getChartPointsService.GetPointsByUserDataAsync(userData);
                 if (points.Any())
                 {
                     return Ok(points);
                 }
-                else
-                {
-                    return NoContent();
-                }
-            }
 
+                return NoContent();    
+            }
             return ValidationProblem();
         }
     }

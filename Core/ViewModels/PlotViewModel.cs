@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Core.ViewModels
 {
-    [RangeValidation]
+    [StepValidation]
     public class PlotViewModel
     {
         [Required(ErrorMessage = "Start range required!")]
