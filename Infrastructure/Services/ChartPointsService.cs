@@ -24,20 +24,22 @@ namespace Infrastructure.Services
         }
         public async Task<IEnumerable<Point>> GetPointsByUserDataAsync(UserData data)
         {
-            var userData = await _userDataRepository.TryToGetDuplicatedUserDataAsync(data);
+            var duplicatedUserData = await _userDataRepository.TryToGetDuplicatedUserDataAsync(data);
             IEnumerable<Point> points;
-            if (userData != null)
+            if (duplicatedUserData != null)
             {
-                if (!_memoryCache.TryGetValue(data.UserDataId, out points))
+                if (!_memoryCache.TryGetValue(duplicatedUserData.UserDataId, out points))
                 {
-                    points = await _pointsRepository.GetPointsByUserDataAsync(userData);
+                    points = await _pointsRepository.GetPointsByUserDataAsync(duplicatedUserData);
+                    SavePointsToCache(duplicatedUserData, points);
                 }
             }
             else
             {
-                points = CalculatePointsByUserData(userData);
-                SavePointsToCache(userData, points);
+                await _userDataRepository.CreateItemAsync(data);
+                points = CalculatePointsByUserData(data);            
                 await _pointsRepository.AddPointsRangeAsync(points);
+                SavePointsToCache(data, points);
             }
 
             return points;
