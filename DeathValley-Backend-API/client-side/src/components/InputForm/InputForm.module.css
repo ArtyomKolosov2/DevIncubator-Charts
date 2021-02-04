@@ -1,8 +1,32 @@
 .form{
     grid-area: f;
-  }
+    border: 2px solid cornflowerblue;
+    border-radius: 5px;
+    max-width: auto;
+    max-height: auto;
+}
   
-.item{
-    max-width: 100px;
-    min-width: 20px;
+.form_group {
+    position: relative;
+    display: flex;
+    justify-content: left;
+    padding-top: 10px;
+    margin: auto;
+}
+
+.form_btn{
+  margin: 5px;
+}
+
+.form_group label{
+  margin-right: 20px;
+}
+
+.form_group input {
+  height: 30px;
+  width: 70px;
+  border: 2px solid black;
+  border-radius: 4px;
+  vertical-align: middle;
+  padding: 5px 8px;
 }

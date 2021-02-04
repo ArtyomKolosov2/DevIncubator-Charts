@@ -6,18 +6,18 @@ using System.Text;
 
 namespace Core.ValidationAttributes
 {
-    public class StepValidationAttribute : ValidationAttribute
+    public class RangeValidationAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)
         {
             var plotViewModel = value as PlotViewModel;
             var validationResult = true;
-            if (plotViewModel.RangeFrom >= plotViewModel.RangeTo && plotViewModel.Step > 0)
+            if (plotViewModel.RangeFrom >= plotViewModel.RangeTo)
             {
-                ErrorMessage = "Step must be negative for this range!";
+                ErrorMessage = "Range must be correct!";
                 validationResult = false;
             }
-            else if (plotViewModel.RangeFrom <= plotViewModel.RangeTo && plotViewModel.Step < 0)
+            else if (plotViewModel.Step < 0)
             {
                 ErrorMessage = "Step must be positive for this range!";
                 validationResult = false;

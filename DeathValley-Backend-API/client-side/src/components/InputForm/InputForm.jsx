@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Col } from 'react-bootstrap';
 import s from './InputForm.module.css';
+import * as axios from 'axios';
 
 class InputForm extends Component {
     constructor(props) {
@@ -25,29 +26,43 @@ class InputForm extends Component {
         });
     }
 
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
-        alert(`${this.state.a} ${this.state.b} ${this.state.c}`)
+        let data = {
+            a: this.state.a,
+            b: this.state.b,
+            c: this.state.c,
+            step: this.state.step,
+            rangeFrom: this.state.from,
+            rangeTo: this.state.to
+        };
+
+        let res = await axios.post('/api/Plot', data);
+        console.log(res.data);
+
     }
 
     render() {
         return (
-            <Form onSubmit={this.handleSubmit} className={s.form}>
-                <Form.Group>
+            <div className={s.form}>
+                <Form onSubmit={this.handleSubmit} >
                     <Form.Group as={Col}>
-                        <Form.Label>Function: </Form.Label>
-                        <strong>y = </strong><Form.Control name="a" type="number" className={s.item} value={this.state.a} onChange={this.onChange} />
-                        <strong>x^2 +</strong><Form.Control name="b" type="number" className={s.item} value={this.state.b} onChange={this.onChange} />
-                        <strong>x + </strong><Form.Control name="c" type="number" className={s.item} value={this.state.c} onChange={this.onChange} />
+                        <Form.Row className={s.form_group}>
+                            <label>Function: </label><strong>y = <input name="a" type="number" value={this.state.a} onChange={this.onChange} /></strong>
+                            <strong>x^2 + <input name="b" type="number" value={this.state.b} onChange={this.onChange} /></strong>
+                            <strong>x + <input name="c" type="number" value={this.state.c} onChange={this.onChange} /></strong>
+                        </Form.Row>
+                        <Form.Row className={s.form_group}><label>Step: </label><input name="step" type="number" value={this.state.step} onChange={this.onChange} /></Form.Row>
+                        <Form.Row className={s.form_group}>
+                            <label>From: </label><input name="from" type="number" value={this.state.from} onChange={this.onChange} />
+                            <label style={{ marginLeft: 10 }}>To: </label><input name="to" type="number" value={this.state.to} onChange={this.onChange} />
+                        </Form.Row>
                     </Form.Group>
-                    <br /> <label>Step: </label><input name="step" type="number" value={this.state.step} onChange={this.onChange} />
-                    <br /> <label>From: </label><input name="from" type="number" value={this.state.from} onChange={this.onChange} />
-                    <p>to</p><label>To: </label><input name="to" type="number" value={this.state.to} onChange={this.onChange} />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Отправить
-                </Button>
-            </Form>
+                    <Button className={s.form_btn} variant="primary" type="submit">
+                        Отправить
+                    </Button>
+                </Form>
+            </div>
         );
     }
 }

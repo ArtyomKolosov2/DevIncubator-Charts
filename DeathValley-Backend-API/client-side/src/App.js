@@ -1,17 +1,17 @@
 
+import { Route } from 'react-router-dom';
 import './App.css';
-import Graphic from './components/Graphic/Graphic';
 import Header from './components/Header/Header';
-import InputForm from './components/InputForm/InputForm';
+import MainContent from './components/MainContent/MainContent';
 
 
 
 function App() {
   return (
     <div className="app-wrapper">
-      <Header></Header>
-      <InputForm></InputForm>
-      <Graphic></Graphic>
+      <Header/>
+      <Route exact path='/' component={MainContent}></Route>
+      <Route path='/about'></Route>
     </div>
   );
 }
