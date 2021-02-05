@@ -38,14 +38,13 @@
             Method main
             </summary>
             <param name="args"></param>
-            <returns></returns>
         </member>
         <member name="M:DeathValley_Backend_API.Program.CreateHostBuilder(System.String[])">
             <summary>
             Creates the host builder
             </summary>
             <param name="args"></param>
-            <returns></returns>
+            <returns>IHostBuilder object</returns>
         </member>
         <member name="T:DeathValley_Backend_API.Startup">
             <summary>

@@ -43,7 +43,7 @@ namespace DeathValley_Backend_API.Controllers
         /// <response code="204">If query was succesfull, but something went wrong</response>
         /// <response code="401">If model validation errors</response>
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<Point>>> GetPoints([FromBody] PlotViewModel viewModel)
+        public async Task<ActionResult<IEnumerable<PointViewModel>>> GetPoints([FromBody] PlotViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -51,7 +51,9 @@ namespace DeathValley_Backend_API.Controllers
                 var points = await _getChartPointsService.GetPointsByUserDataAsync(userData);
                 if (points.Any())
                 {
-                    return Ok(points);
+                    return Ok(from p in points
+                              orderby p.PointX
+                              select new PointViewModel{X = p.PointX, Y = p.PointY });
                 }
 
                 return NoContent();    

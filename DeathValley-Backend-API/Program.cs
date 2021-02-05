@@ -12,7 +12,6 @@ namespace DeathValley_Backend_API
         /// Method main
         /// </summary>
         /// <param name="args"></param>
-        /// <returns></returns>
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
@@ -22,7 +21,7 @@ namespace DeathValley_Backend_API
         /// Creates the host builder
         /// </summary>
         /// <param name="args"></param>
-        /// <returns></returns>
+        /// <returns>IHostBuilder object</returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>

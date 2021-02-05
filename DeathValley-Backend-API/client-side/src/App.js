@@ -11,7 +11,6 @@ function App() {
     <div className="app-wrapper">
       <Header/>
       <Route exact path='/' component={MainContent}></Route>
-      <Route path='/about'></Route>
     </div>
   );
 }

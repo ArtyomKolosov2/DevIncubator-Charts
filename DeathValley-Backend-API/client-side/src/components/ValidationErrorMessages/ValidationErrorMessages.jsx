@@ -1,11 +1,16 @@
-import React, { Component } from 'react';
-import s from './ValidationErrorMessages.module.css';
+import React from 'react';
 
-export default class ValidationErrorMessages extends Component {
-    render() {
-        return (
-            <div className={s.validation}>
+const ValidationErrorMessages = ({ formErrors }) =>
+    <div className='formErrors'>
+        {Object.keys(formErrors).map((fieldName, i) => {
+            if (formErrors[fieldName].length > 0) {
+                return (
+                    <li className="text-danger" key={i}>{fieldName} {formErrors[fieldName]}</li>
+                )
+            } else {
+                return '';
+            }
+        })}
+    </div>
 
-            </div>);
-    }
-}
+export default ValidationErrorMessages;
