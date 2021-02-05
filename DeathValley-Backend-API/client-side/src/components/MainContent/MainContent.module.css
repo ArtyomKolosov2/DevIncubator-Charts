@@ -1,0 +1,11 @@
+.content_wrapper{
+    grid-area: 'mc';
+    display: grid;
+    margin: 0 auto;
+    width: 1120px;
+    grid-template-areas: 
+    "g f"
+    "g v";
+    grid-template-rows: 200px 1fr;
+    grid-template-columns: 2 fr 10fr;
+  }

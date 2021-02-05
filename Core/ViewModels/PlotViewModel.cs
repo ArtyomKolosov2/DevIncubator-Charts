@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Core.ViewModels
 {
+    [RangeValidation]
     [StepValidation]
     public class PlotViewModel
     {
@@ -15,8 +16,11 @@ namespace Core.ViewModels
         public int RangeTo { get; set; }
         [Required(ErrorMessage = "Step required!")]
         public float Step { get; set; }
+        [Required]
         public int A { get; set; }
+        [Required]
         public int B { get; set; }
+        [Required]
         public int C { get; set; }
     }
 }

@@ -7,11 +7,11 @@ export default class NavHeader extends Component {
             <div>
                 <br />
                 <Navbar bg="primary" variant="dark">
-                    <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+                    <Navbar.Brand href="/">Death Valley</Navbar.Brand>
                     <Nav className="mr-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#features">Features</Nav.Link>
-                        <Nav.Link href="#pricing">Pricing</Nav.Link>
+                        <Nav.Link className='text-white' href="/swagger">
+                            Swagger Docs
+                        </Nav.Link>
                     </Nav>
                 </Navbar>
             </div>);

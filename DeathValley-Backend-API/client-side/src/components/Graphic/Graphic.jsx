@@ -1,13 +1,28 @@
 import React, { Component } from 'react';
-import { Chart } from 'react-charts'
-import s from './Graphic.module.css'
+import JXGBoard from 'jsxgraph-react-js';
+import s from './Graphic.module.css';
 
-export default class Graphic extends Component {
-    render() {
-        return (
-            <div className={s.graphic}>
-                
-            </div>
-        )
-    }
+
+
+class Graphic extends Component {
+
+  logicJS = (brd) => {
+    brd.suspendUpdate();
+    brd.create('curve', [this.props.x, this.props.y]);
+    brd.unsuspendUpdate();
+  }
+
+  render() {
+    return (
+      <JXGBoard className={s.graphic}
+        logic={this.logicJS}
+        boardAttributes={{ axis: true, boundingbox: [-80, 80, 80, -80] }}
+        style={{
+          border: "2px solid red"
+        }}
+      /> 
+    )
+  }
 }
+
+export default Graphic;
