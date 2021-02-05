@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import JXGBoard from 'jsxgraph-react-js';
 import s from './Graphic.module.css';
 
-
-
 class Graphic extends Component {
 
   logicJS = (brd) => {
@@ -20,7 +18,7 @@ class Graphic extends Component {
         style={{
           border: "2px solid red"
         }}
-      /> 
+      />
     )
   }
 }

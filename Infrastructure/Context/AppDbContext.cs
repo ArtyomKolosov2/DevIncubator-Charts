@@ -10,7 +10,7 @@ namespace Infrastructure.Context
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-
+            Database.EnsureCreated();
         }
         public DbSet<Point> Points { get; set; }
         public DbSet<UserData> UserDatas { get; set; }
