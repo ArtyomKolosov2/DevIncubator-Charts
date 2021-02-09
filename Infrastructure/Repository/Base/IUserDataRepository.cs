@@ -9,7 +9,7 @@ namespace Infrastructure.Repository.Base
 {
     public interface IUserDataRepository : IRepository<UserData>
     {
-        Task<UserData> TryToGetDuplicatedUserDataAsync(UserData duplicatedData);
+        Task<UserData> GetDuplicatedUserDataOrDefaultAsync(UserData duplicatedData);
         Task<IEnumerable<UserData>> GetAllUserDataAsync();
     }
 }

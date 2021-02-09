@@ -22,7 +22,7 @@ namespace Infrastructure.Repository
             return await GetItemsListAsync();
         }
 
-        public async Task<UserData> TryToGetDuplicatedUserDataAsync(UserData duplicatedData)
+        public async Task<UserData> GetDuplicatedUserDataOrDefaultAsync(UserData duplicatedData)
         {
             var userData = await Context.UserDatas.FirstOrDefaultAsync
                 (

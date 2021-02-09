@@ -24,7 +24,7 @@ namespace Infrastructure.Services
         }
         public async Task<IEnumerable<Point>> GetPointsByUserDataAsync(UserData data)
         {
-            var duplicatedUserData = await _userDataRepository.TryToGetDuplicatedUserDataAsync(data);
+            var duplicatedUserData = await _userDataRepository.GetDuplicatedUserDataOrDefaultAsync(data);
             IEnumerable<Point> points;
             if (duplicatedUserData != null)
             {
