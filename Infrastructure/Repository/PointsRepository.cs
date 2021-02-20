@@ -23,10 +23,7 @@ namespace Infrastructure.Repository
             return await _appDbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Point>> GetAllPointsAsync()
-        {
-            return await GetItemsListAsync();
-        }
+        public Task<IEnumerable<Point>> GetAllPointsAsync() => GetItemsListAsync();
 
         public async Task<IEnumerable<Point>> GetPointsByUserDataAsync(UserData data)
         {

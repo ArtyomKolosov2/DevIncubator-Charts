@@ -17,14 +17,12 @@ namespace Infrastructure.Repository
 
         }
 
-        public async Task<IEnumerable<UserData>> GetAllUserDataAsync()
-        {
-            return await GetItemsListAsync();
-        }
+        public Task<IEnumerable<UserData>> GetAllUserDataAsync() => GetItemsListAsync();
 
-        public async Task<UserData> GetDuplicatedUserDataOrDefaultAsync(UserData duplicatedData)
+
+        public Task<UserData> GetDuplicatedUserDataOrDefaultAsync(UserData duplicatedData)
         {
-            var userData = await Context.UserDatas.FirstOrDefaultAsync
+            var userData = Context.UserDatas.FirstOrDefaultAsync
                 (
                     userData =>
                     userData.A == duplicatedData.A &&
@@ -33,6 +31,7 @@ namespace Infrastructure.Repository
                     userData.RangeTo == duplicatedData.RangeTo &&
                     userData.RangeFrom == duplicatedData.RangeFrom
                 );
+
             return userData;
         }
     }

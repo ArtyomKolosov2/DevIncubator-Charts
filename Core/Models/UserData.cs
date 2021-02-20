@@ -21,6 +21,7 @@ namespace Core.Models
             RangeFrom = plotViewModel.RangeFrom;
             RangeTo = plotViewModel.RangeTo;
         }
+
         public int UserDataId { get; set; }
         public int RangeFrom { get; set; }
         public int RangeTo { get; set; }

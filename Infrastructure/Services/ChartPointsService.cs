@@ -16,24 +16,30 @@ namespace Infrastructure.Services
         private readonly IMemoryCache _memoryCache;
         private readonly IPointsRepository _pointsRepository;
         private readonly IUserDataRepository _userDataRepository;
+
         public ChartPointsService(IMemoryCache memoryCache, IPointsRepository pointsRepository, IUserDataRepository userDataRepository)
         {
             _memoryCache = memoryCache;
             _pointsRepository = pointsRepository;
             _userDataRepository = userDataRepository;
         }
+
         public async Task<IEnumerable<Point>> GetPointsByUserDataAsync(UserData data)
         {
             var duplicatedUserData = await _userDataRepository.GetDuplicatedUserDataOrDefaultAsync(data);
             IEnumerable<Point> points;
+
             if (duplicatedUserData != null)
             {
+
                 if (!_memoryCache.TryGetValue(duplicatedUserData.UserDataId, out points))
                 {
                     points = await _pointsRepository.GetPointsByUserDataAsync(duplicatedUserData);
                     SavePointsToCache(duplicatedUserData, points);
                 }
+
             }
+
             else
             {
                 await _userDataRepository.CreateItemAsync(data);
@@ -56,6 +62,7 @@ namespace Infrastructure.Services
         private IEnumerable<Point> CalculatePointsByUserData(UserData data)
         {
             var resultList = new List<Point>();
+
             for (double currentX = data.RangeFrom; currentX <= data.RangeTo; currentX += data.Step)
             {
                 resultList.Add(new Point
@@ -66,6 +73,7 @@ namespace Infrastructure.Services
                 }
                 );
             }
+
             return resultList;
         }
 
