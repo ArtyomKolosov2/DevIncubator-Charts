@@ -8,8 +8,8 @@ namespace Infrastructure.Repository.Base
 {
     public interface IPointsRepository : IRepository<Point>
     {
-        Task<IEnumerable<Point>> GetPointsByUserDataAsync(UserData data);
-        Task<int> AddPointsRangeAsync(IEnumerable<Point> points);
-        Task<IEnumerable<Point>> GetAllPointsAsync();
+        Task<IEnumerable<Point>> GetPointsByUserData(UserData data);
+        Task<int> AddPointsRange(IEnumerable<Point> points);
+        Task<IEnumerable<Point>> GetAllPoints();
     }
 }

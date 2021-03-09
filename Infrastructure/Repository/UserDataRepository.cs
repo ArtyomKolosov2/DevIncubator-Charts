@@ -17,10 +17,10 @@ namespace Infrastructure.Repository
 
         }
 
-        public Task<IEnumerable<UserData>> GetAllUserDataAsync() => GetItemsListAsync();
+        public Task<IEnumerable<UserData>> GetAllUserData() => GetItemsList();
 
 
-        public Task<UserData> GetDuplicatedUserDataOrDefaultAsync(UserData duplicatedData)
+        public Task<UserData> GetDuplicatedUserDataOrDefault(UserData duplicatedData)
         {
             var userData = Context.UserDatas.FirstOrDefaultAsync
                 (

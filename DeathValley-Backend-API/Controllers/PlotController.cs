@@ -49,18 +49,20 @@ namespace DeathValley_Backend_API.Controllers
             {
                 var userData = new UserData(viewModel);
                 var points = await _getChartPointsService.GetPointsByUserDataAsync(userData);
+
                 if (points.Any())
                 {
                     return Ok(points.OrderBy(x => x.PointX)
-                        .Select(x => new PointViewModel
-                        {
-                            X = x.PointX,
-                            Y = x.PointY
-                        }));
+                                    .Select(x => new PointViewModel
+                                    {
+                                        X = x.PointX,
+                                        Y = x.PointY
+                                    }));
                 }
 
                 return NoContent();    
             }
+
             return ValidationProblem();
         }
     }

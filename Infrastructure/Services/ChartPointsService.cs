@@ -26,7 +26,7 @@ namespace Infrastructure.Services
 
         public async Task<IEnumerable<Point>> GetPointsByUserDataAsync(UserData data)
         {
-            var duplicatedUserData = await _userDataRepository.GetDuplicatedUserDataOrDefaultAsync(data);
+            var duplicatedUserData = await _userDataRepository.GetDuplicatedUserDataOrDefault(data);
             IEnumerable<Point> points;
 
             if (duplicatedUserData != null)
@@ -34,7 +34,7 @@ namespace Infrastructure.Services
 
                 if (!_memoryCache.TryGetValue(duplicatedUserData.UserDataId, out points))
                 {
-                    points = await _pointsRepository.GetPointsByUserDataAsync(duplicatedUserData);
+                    points = await _pointsRepository.GetPointsByUserData(duplicatedUserData);
                     SavePointsToCache(duplicatedUserData, points);
                 }
 
@@ -42,9 +42,9 @@ namespace Infrastructure.Services
 
             else
             {
-                await _userDataRepository.CreateItemAsync(data);
+                await _userDataRepository.CreateItem(data);
                 points = CalculatePointsByUserData(data);            
-                await _pointsRepository.AddPointsRangeAsync(points);
+                await _pointsRepository.AddPointsRange(points);
                 SavePointsToCache(data, points);
             }
 
@@ -77,7 +77,7 @@ namespace Infrastructure.Services
             return resultList;
         }
 
-        private double CalculateFunction(double currentX, int a, int b, int c)
+        private static double CalculateFunction(double currentX, int a, int b, int c)
         {
             return a * Pow(currentX, 2) + b * currentX + c;
         }

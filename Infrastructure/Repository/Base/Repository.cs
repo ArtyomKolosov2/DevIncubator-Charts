@@ -17,29 +17,29 @@ namespace Infrastructure.Repository.Base
             Context = context;
         }
 
-        public async Task<IEnumerable<T>> GetItemsListAsync()
+        public async Task<IEnumerable<T>> GetItemsList()
         {
             return await _entitySet.ToListAsync();
         }
 
-        public async Task<T> GetItemAsync(int id)
+        public async Task<T> GetItem(int id)
         {
             return await _entitySet.FindAsync(id);
         }
 
-        public async Task CreateItemAsync(T item)
+        public async Task CreateItem(T item)
         {
             await Context.AddAsync(item);
             await SaveAllAsync();
         }
 
-        public async Task UpdateItemAsync(T item)
+        public async Task UpdateItem(T item)
         {
             Context.Entry(item).State = EntityState.Modified;
             await SaveAllAsync();
         }
 
-        public async Task DeleteItemAsync(T item)
+        public async Task DeleteItem(T item)
         {
             _entitySet.Remove(item);
             await SaveAllAsync();

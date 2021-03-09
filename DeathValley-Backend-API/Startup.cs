@@ -40,6 +40,7 @@ namespace DeathValley_Backend_API
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
+
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             services.AddTransient<IChartPointsService, ChartPointsService>();
             services.AddTransient<IPointsRepository, PointsRepository>();
@@ -64,6 +65,7 @@ namespace DeathValley_Backend_API
                         Name = "Artyom Kolosov"
                     }
                 });
+
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
