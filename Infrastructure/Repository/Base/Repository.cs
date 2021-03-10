@@ -10,38 +10,38 @@ namespace Infrastructure.Repository.Base
     public class Repository<T> : IRepository<T> where T : class
     {
         protected AppDbContext Context { get; set; }
-        private DbSet<T> _entitySet => Context.Set<T>();
+        private DbSet<T> EntitySet => Context.Set<T>();
 
         public Repository(AppDbContext context)
         {
             Context = context;
         }
 
-        public async Task<IEnumerable<T>> GetItemsListAsync()
+        public async Task<IEnumerable<T>> GetItemsList()
         {
-            return await _entitySet.ToListAsync();
+            return await EntitySet.ToListAsync();
         }
 
-        public async Task<T> GetItemAsync(int id)
+        public async Task<T> GetItem(int id)
         {
-            return await _entitySet.FindAsync(id);
+            return await EntitySet.FindAsync(id);
         }
 
-        public async Task CreateItemAsync(T item)
+        public async Task CreateItem(T item)
         {
             await Context.AddAsync(item);
             await SaveAllAsync();
         }
 
-        public async Task UpdateItemAsync(T item)
+        public async Task UpdateItem(T item)
         {
             Context.Entry(item).State = EntityState.Modified;
             await SaveAllAsync();
         }
 
-        public async Task DeleteItemAsync(T item)
+        public async Task DeleteItem(T item)
         {
-            _entitySet.Remove(item);
+            EntitySet.Remove(item);
             await SaveAllAsync();
         }
 

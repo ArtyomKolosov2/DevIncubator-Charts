@@ -17,18 +17,15 @@ namespace Infrastructure.Repository
         {
             _appDbContext = appDbContext;
         }
-        public async Task<int> AddPointsRangeAsync(IEnumerable<Point> points)
+        public async Task<int> AddPointsRange(IEnumerable<Point> points)
         {
             await _appDbContext.AddRangeAsync(points);
             return await _appDbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Point>> GetAllPointsAsync()
-        {
-            return await GetItemsListAsync();
-        }
+        public Task<IEnumerable<Point>> GetAllPoints() => GetItemsList();
 
-        public async Task<IEnumerable<Point>> GetPointsByUserDataAsync(UserData data)
+        public async Task<IEnumerable<Point>> GetPointsByUserData(UserData data)
         {
             return await _appDbContext.Points.Where(point => point.ChartId == data.UserDataId).ToListAsync();
         }

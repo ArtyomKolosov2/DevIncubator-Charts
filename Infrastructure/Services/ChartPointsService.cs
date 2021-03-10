@@ -16,29 +16,35 @@ namespace Infrastructure.Services
         private readonly IMemoryCache _memoryCache;
         private readonly IPointsRepository _pointsRepository;
         private readonly IUserDataRepository _userDataRepository;
+
         public ChartPointsService(IMemoryCache memoryCache, IPointsRepository pointsRepository, IUserDataRepository userDataRepository)
         {
             _memoryCache = memoryCache;
             _pointsRepository = pointsRepository;
             _userDataRepository = userDataRepository;
         }
+
         public async Task<IEnumerable<Point>> GetPointsByUserDataAsync(UserData data)
         {
-            var duplicatedUserData = await _userDataRepository.TryToGetDuplicatedUserDataAsync(data);
+            var duplicatedUserData = await _userDataRepository.GetDuplicatedUserDataOrDefault(data);
             IEnumerable<Point> points;
+
             if (duplicatedUserData != null)
             {
+
                 if (!_memoryCache.TryGetValue(duplicatedUserData.UserDataId, out points))
                 {
-                    points = await _pointsRepository.GetPointsByUserDataAsync(duplicatedUserData);
+                    points = await _pointsRepository.GetPointsByUserData(duplicatedUserData);
                     SavePointsToCache(duplicatedUserData, points);
                 }
+
             }
+
             else
             {
-                await _userDataRepository.CreateItemAsync(data);
+                await _userDataRepository.CreateItem(data);
                 points = CalculatePointsByUserData(data);            
-                await _pointsRepository.AddPointsRangeAsync(points);
+                await _pointsRepository.AddPointsRange(points);
                 SavePointsToCache(data, points);
             }
 
@@ -56,6 +62,7 @@ namespace Infrastructure.Services
         private IEnumerable<Point> CalculatePointsByUserData(UserData data)
         {
             var resultList = new List<Point>();
+
             for (double currentX = data.RangeFrom; currentX <= data.RangeTo; currentX += data.Step)
             {
                 resultList.Add(new Point
@@ -66,10 +73,11 @@ namespace Infrastructure.Services
                 }
                 );
             }
+
             return resultList;
         }
 
-        private double CalculateFunction(double currentX, int a, int b, int c)
+        private static double CalculateFunction(double currentX, int a, int b, int c)
         {
             return a * Pow(currentX, 2) + b * currentX + c;
         }
