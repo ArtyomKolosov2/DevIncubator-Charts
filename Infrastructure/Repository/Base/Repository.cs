@@ -10,7 +10,7 @@ namespace Infrastructure.Repository.Base
     public class Repository<T> : IRepository<T> where T : class
     {
         protected AppDbContext Context { get; set; }
-        private DbSet<T> _entitySet => Context.Set<T>();
+        private DbSet<T> EntitySet => Context.Set<T>();
 
         public Repository(AppDbContext context)
         {
@@ -19,12 +19,12 @@ namespace Infrastructure.Repository.Base
 
         public async Task<IEnumerable<T>> GetItemsList()
         {
-            return await _entitySet.ToListAsync();
+            return await EntitySet.ToListAsync();
         }
 
         public async Task<T> GetItem(int id)
         {
-            return await _entitySet.FindAsync(id);
+            return await EntitySet.FindAsync(id);
         }
 
         public async Task CreateItem(T item)
@@ -41,7 +41,7 @@ namespace Infrastructure.Repository.Base
 
         public async Task DeleteItem(T item)
         {
-            _entitySet.Remove(item);
+            EntitySet.Remove(item);
             await SaveAllAsync();
         }
 
