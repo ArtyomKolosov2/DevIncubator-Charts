@@ -1,4 +1,4 @@
-# DevIncubator_DeathValley
+# DevIncubator
 
  Web-application which is able to draw a chart of the parabolic function.
  
